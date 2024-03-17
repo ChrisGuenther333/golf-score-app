@@ -19,9 +19,19 @@ document.addEventListener("click", event => {
   }
   else if (event.target == document.getElementById('tee-box-select')) {
     teeBoxOptions.forEach(teeBox => {
-      if (event.target.value == (teeBox.teeTypeId - 1)) {
-        if (currentTeeBox.courseHoleTeeBoxId != teeBox.courseHoleTeeBoxId) {
-          renderTable(teeBox);
+      //Checking if Spanish Oaks Golf Course (teeTypeID is incorrect)
+      if(currentGolfCourse.id != 19002) {
+        if (event.target.value == (teeBox.teeTypeId - 1)) {
+          if (currentTeeBox.courseHoleTeeBoxId != teeBox.courseHoleTeeBoxId) {
+            renderTable(teeBox);
+          }
+        }
+      }
+      else {
+        if (event.target.value == (teeBox.teeTypeId - 2)) {
+          if (currentTeeBox.courseHoleTeeBoxId != teeBox.courseHoleTeeBoxId) {
+            renderTable(teeBox);
+          }
         }
       }
     })
@@ -79,22 +89,104 @@ function renderTeeBoxSelect(selectedCourse) {
 
 function renderTable(selectedTeeBox) {
   currentTeeBox = selectedTeeBox;
-  
+  //Start of front9 render
   let front9HTML = '';
+  //Render front9 headers
   front9HTML += '<tr><th>Hole</th>';
-
   for (let i=0; i < 9; i++) {
     front9HTML += `<th>${currentGolfCourse.holes[i].hole}</th>`
   }
   front9HTML += '</tr>'
+  //Checking if Spanish Oaks Golf Course
+  if(currentGolfCourse.id != 19002) {
+    //Render front9 yardage
+    front9HTML +=  '<tr><td>Yardage</td>'
+    for (let i=0; i < 9; i++) {
+      front9HTML += `<td>${currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-1].yards}</td>`
+    }
+    front9HTML +=  '</tr>'
+    //Render front9 par
+    front9HTML +=  '<tr><td>Par</td>'
+    for (let i=0; i < 9; i++) {
+      front9HTML += `<td>${currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-1].par}</td>`
+    }
+    front9HTML +=  '</tr>'
+    //Render front9 handicap
+    front9HTML +=  '<tr><td>Handicap</td>'
+    for (let i=0; i < 9; i++) {
+      front9HTML += `<td>${currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-1].hcp}</td>`
+    }
+  }
+  else {
+    //Render front9 yardage
+    front9HTML +=  '<tr><td>Yardage</td>'
+    for (let i=0; i < 9; i++) {
+      front9HTML += `<td>${currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-2].yards}</td>`
+    }
+    front9HTML +=  '</tr>'
+    //Render front9 par
+    front9HTML +=  '<tr><td>Par</td>'
+    for (let i=0; i < 9; i++) {
+      front9HTML += `<td>${currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-2].par}</td>`
+    }
+    front9HTML +=  '</tr>'
+    //Render front9 handicap
+    front9HTML +=  '<tr><td>Handicap</td>'
+    for (let i=0; i < 9; i++) {
+      front9HTML += `<td>${currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-2].hcp}</td>`
+    }
+  }
+  front9HTML +=  '</tr>'
 
+  //Start of back9 render
   let back9HTML = '';
+  //Render back9 headers
   back9HTML += '<tr><th>Hole</th>';
-
   for (let i=9; i < currentGolfCourse.holes.length; i++) {
     back9HTML += `<th>${currentGolfCourse.holes[i].hole}</th>`
   }
   back9HTML += '</tr>'
+  //Checking if Spanish Oaks Golf Course
+  if(currentGolfCourse.id != 19002) {
+    //Render back9 yardage
+    back9HTML +=  '<tr><td>Yardage</td>'
+    for (let i=9; i < currentGolfCourse.holes.length; i++) {
+      back9HTML += `<td>${currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-1].yards}</td>`
+    }
+    back9HTML +=  '</tr>'
+    //Render back9 par
+    back9HTML +=  '<tr><td>Par</td>'
+    for (let i=9; i < currentGolfCourse.holes.length; i++) {
+      back9HTML += `<td>${currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-1].par}</td>`
+    }
+    back9HTML +=  '</tr>'
+    //Render back9 handicap
+    back9HTML +=  '<tr><td>Handicap</td>'
+    for (let i=9; i < currentGolfCourse.holes.length; i++) {
+      back9HTML += `<td>${currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-1].hcp}</td>`
+    }
+    back9HTML +=  '</tr>'
+  }
+  else {
+    //Render back9 yardage
+    back9HTML +=  '<tr><td>Yardage</td>'
+    for (let i=9; i < currentGolfCourse.holes.length; i++) {
+      back9HTML += `<td>${currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-2].yards}</td>`
+    }
+    back9HTML +=  '</tr>'
+    //Render back9 par
+    back9HTML +=  '<tr><td>Par</td>'
+    for (let i=9; i < currentGolfCourse.holes.length; i++) {
+      back9HTML += `<td>${currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-2].par}</td>`
+    }
+    back9HTML +=  '</tr>'
+    //Render back9 handicap
+    back9HTML +=  '<tr><td>Handicap</td>'
+    for (let i=9; i < currentGolfCourse.holes.length; i++) {
+      back9HTML += `<td>${currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-2].hcp}</td>`
+    }
+    back9HTML +=  '</tr>'
+  }
 
   document.getElementById('front9').innerHTML = front9HTML;
   document.getElementById('back9').innerHTML = back9HTML;
