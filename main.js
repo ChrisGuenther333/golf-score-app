@@ -1,5 +1,7 @@
 let courses = [];
 let currentGolfCourse = '';
+let teeBoxOptions = [];
+let currentTeeBox = '';
 
 //Global click listener
 document.addEventListener("click", event => {
@@ -15,7 +17,25 @@ document.addEventListener("click", event => {
       }
     })
   }
+  else if (event.target == document.getElementById('tee-box-select')) {
+    teeBoxOptions.forEach(teeBox => {
+      if (event.target.value == (teeBox.teeTypeId - 1)) {
+        if (currentTeeBox.courseHoleTeeBoxId != teeBox.courseHoleTeeBoxId) {
+          renderTable(teeBox);
+        }
+      }
+    })
+  }
 });
+
+class Player {
+  constructor(name, id = getNextId(), scores = []) {
+    this.name = name;
+    this.id = id;
+    this.scores = scores;
+  }
+}
+
 //Fetch golf course list
 function getAvailableGolfCourses() {
   return fetch(
@@ -44,24 +64,27 @@ function renderCoursesList() {
 
 function renderTeeBoxSelect(selectedCourse) {
   currentGolfCourse = selectedCourse;
-  console.log(currentGolfCourse)
-  let teeBoxSelectHtml = ''
-  currentGolfCourse.holes.forEach(hole => {
-    hole.teeBoxes.forEach(function (teeBox, index) {
-      teeBoxSelectHtml += `<option value="${index}">${teeBox.teeType.toUpperCase()}, ${
-        teeBox.totalYards
-      } yards</option>`
-    });
-  })
+  teeBoxOptions = [];
+  let teeBoxSelectHtml = '';
+  //Returns tees for first hole of selected course
+  currentGolfCourse.holes[0].teeBoxes.forEach(function (teeBox, index) {
+    teeBoxSelectHtml += `<option value="${index}">${teeBox.teeType.toUpperCase()}, ${
+      teeBox.totalYards
+    } yards</option>`
+    teeBoxOptions.push(teeBox);
+  });
 
   document.getElementById('tee-box-select').innerHTML = teeBoxSelectHtml;
 }
 
+function renderTable(selectedTeeBox) {
+  currentTeeBox = selectedTeeBox;
 
+  
+}
 
 
 getAvailableGolfCourses().then(response => {
   courses = response;
-  console.log(courses)
   renderCoursesList()
 })
