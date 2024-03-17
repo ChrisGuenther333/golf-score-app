@@ -79,6 +79,25 @@ function renderTeeBoxSelect(selectedCourse) {
 
 function renderTable(selectedTeeBox) {
   currentTeeBox = selectedTeeBox;
+  
+  let front9HTML = '';
+  front9HTML += '<tr><th>Hole</th>';
+
+  for (let i=0; i < 9; i++) {
+    front9HTML += `<th>${currentGolfCourse.holes[i].hole}</th>`
+  }
+  front9HTML += '</tr>'
+
+  let back9HTML = '';
+  back9HTML += '<tr><th>Hole</th>';
+
+  for (let i=9; i < currentGolfCourse.holes.length; i++) {
+    back9HTML += `<th>${currentGolfCourse.holes[i].hole}</th>`
+  }
+  back9HTML += '</tr>'
+
+  document.getElementById('front9').innerHTML = front9HTML;
+  document.getElementById('back9').innerHTML = back9HTML;
 
   
 }
