@@ -38,11 +38,13 @@ document.addEventListener("click", event => {
     })
   }
   else if (event.target == document.getElementById('addPlayer')) {
-    const playerName = document.getElementById('new-list-name-input')
-    const playerId = Math.floor(Math.random() * 1000)
-    const newPlayer = new Player(playerName.value, playerId)
-    players.push(newPlayer)
-    console.log(players)
+    if (players.length < 4) {
+      const playerName = document.getElementById('new-list-name-input')
+      const playerId = Math.floor(Math.random() * 1000)
+      const newPlayer = new Player(playerName.value, playerId)
+      players.push(newPlayer)
+      console.log(players)
+    }
   }
 });
 
@@ -237,8 +239,15 @@ function renderTable(selectedTeeBox) {
   document.getElementById('back9').innerHTML = back9HTML;
 }
 
-
+//Runs when page loads
 getAvailableGolfCourses().then(response => {
   courses = response;
   renderCoursesList()
 })
+// This code is broken
+// .then(() => {
+//   getGolfCourseDetails(courses[0].id)
+// }).then(response => {
+//   console.log(courses[0].id)
+//   renderTeeBoxSelect(response)
+// })
