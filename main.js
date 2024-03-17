@@ -2,6 +2,7 @@ let courses = [];
 let currentGolfCourse = '';
 let teeBoxOptions = [];
 let currentTeeBox = '';
+let players = []
 
 //Global click listener
 document.addEventListener("click", event => {
@@ -19,7 +20,7 @@ document.addEventListener("click", event => {
   }
   else if (event.target == document.getElementById('tee-box-select')) {
     teeBoxOptions.forEach(teeBox => {
-      //Checking if Spanish Oaks Golf Course (teeTypeID is incorrect)
+      //Checking if Spanish Oaks Golf Course
       if(currentGolfCourse.id != 19002) {
         if (event.target.value == (teeBox.teeTypeId - 1)) {
           if (currentTeeBox.courseHoleTeeBoxId != teeBox.courseHoleTeeBoxId) {
@@ -36,10 +37,17 @@ document.addEventListener("click", event => {
       }
     })
   }
+  else if (event.target == document.getElementById('addPlayer')) {
+    const playerName = document.getElementById('new-list-name-input')
+    const playerId = Math.floor(Math.random() * 1000)
+    const newPlayer = new Player(playerName.value, playerId)
+    players.push(newPlayer)
+    console.log(players)
+  }
 });
 
 class Player {
-  constructor(name, id = getNextId(), scores = []) {
+  constructor(name, id, scores = []) {
     this.name = name;
     this.id = id;
     this.scores = scores;
@@ -116,6 +124,7 @@ function renderTable(selectedTeeBox) {
     for (let i=0; i < 9; i++) {
       front9HTML += `<td>${currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-1].hcp}</td>`
     }
+    front9HTML +=  '</tr>'
   }
   else {
     //Render front9 yardage
@@ -135,9 +144,27 @@ function renderTable(selectedTeeBox) {
     for (let i=0; i < 9; i++) {
       front9HTML += `<td>${currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-2].hcp}</td>`
     }
+    front9HTML +=  '</tr>'
+  }  
+  //Renders players' names and scores
+  if (players.length !== 0) {
+    for (let i=0; i < players.length; i++) {
+      front9HTML += `<tr><td>${players[i].name}</td>`
+      for (let j=0; j < 9; j++) {
+        if (players[i].scores[j] != undefined) {
+          front9HTML += `<td>${players[i].scores[j]}</td>`
+        }
+        else {
+          front9HTML += `<td></td>`
+        }
+      }
+    }
+    front9HTML +=  '</tr>'
   }
-  front9HTML +=  '</tr>'
-
+  else {
+    console.log('There are no players currently')
+  }
+  
   //Start of back9 render
   let back9HTML = '';
   //Render back9 headers
@@ -187,11 +214,27 @@ function renderTable(selectedTeeBox) {
     }
     back9HTML +=  '</tr>'
   }
+  //Renders players' names and scores
+  if (players.length !== 0) {
+    for (let i=0; i < players.length; i++) {
+      back9HTML += `<tr><td>${players[i].name}</td>`
+      for (let j=0; j < 9; j++) {
+        if (players[i].scores[j] != undefined) {
+          back9HTML += `<td>${players[i].scores[j]}</td>`
+        }
+        else {
+          back9HTML += `<td></td>`
+        }
+      }
+    }
+    back9HTML +=  '</tr>'
+  }
+  else {
+    console.log('There are no players currently')
+  }
 
   document.getElementById('front9').innerHTML = front9HTML;
   document.getElementById('back9').innerHTML = back9HTML;
-
-  
 }
 
 
