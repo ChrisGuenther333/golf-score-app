@@ -15,6 +15,8 @@ document.addEventListener("click", event => {
           getGolfCourseDetails(course.id).then(response => {
             renderTeeBoxSelect(response);
             renderTable(teeBoxOptions[0])
+          }).catch(error => {
+            console.error('An error occurred: ', error);
           })
         }
       }
@@ -71,7 +73,9 @@ function getAvailableGolfCourses() {
     "https://exquisite-pastelito-9d4dd1.netlify.app/golfapi/courses.json",
   ).then(function (response) {
     return response.json();
-  });
+  }).catch(error => {
+    console.error('An error occurred: ', error);
+  })
 }
 //Fetch selected golf course
 function getGolfCourseDetails(golfCourseId) {
@@ -79,6 +83,8 @@ function getGolfCourseDetails(golfCourseId) {
     `https://exquisite-pastelito-9d4dd1.netlify.app/golfapi/course${golfCourseId}.json`,
   ).then(response => {
     return response.json();
+  }).catch(error => {
+    console.error('An error occurred: ', error);
   })
 }
 //Renders golf course list
@@ -256,5 +262,7 @@ getAvailableGolfCourses().then(response => {
   getGolfCourseDetails(courses[0].id).then(response => {
     renderTeeBoxSelect(response)
     renderTable(teeBoxOptions[0])
+  }).catch(error => {
+    console.error('An error occurred: ', error);
   })
 })
