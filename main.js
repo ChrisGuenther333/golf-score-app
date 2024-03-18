@@ -47,6 +47,7 @@ document.addEventListener("click", event => {
       const playerId = Math.floor(Math.random() * 1000)
       const newPlayer = new Player(playerName.value, playerId)
       players.push(newPlayer)
+      renderTable(currentTeeBox)
     }
   }
 });
