@@ -6,11 +6,12 @@ let players = []
 
 //Global click listener
 document.addEventListener("click", event => {
-  //Returns selected course from course list
+  //Returns clicked course from course list
   if (event.target == document.getElementById('course-select')) {
     courses.forEach(course => {
       if (course.id == event.target.value) {
         if (currentGolfCourse.id != course.id) {
+          //Gets selected course API then renders teeBox
           getGolfCourseDetails(course.id).then(response => {
             renderTeeBoxSelect(response);
           })
@@ -18,9 +19,10 @@ document.addEventListener("click", event => {
       }
     })
   }
+  //Returns clicked tee fromo tee list
   else if (event.target == document.getElementById('tee-box-select')) {
     teeBoxOptions.forEach(teeBox => {
-      //Checking if Spanish Oaks Golf Course
+      //Checking if Spanish Oaks Golf Course then renders table
       if(currentGolfCourse.id != 19002) {
         if (event.target.value == (teeBox.teeTypeId - 1)) {
           if (currentTeeBox.courseHoleTeeBoxId != teeBox.courseHoleTeeBoxId) {
@@ -37,6 +39,7 @@ document.addEventListener("click", event => {
       }
     })
   }
+  //Button adds new player (up to 4)
   else if (event.target == document.getElementById('addPlayer')) {
     if (players.length < 4) {
       const playerName = document.getElementById('new-list-name-input')
@@ -81,7 +84,7 @@ function renderCoursesList() {
   
   document.getElementById('course-select').innerHTML = courseOptionsHtml;
 }
-
+//Renders tee box
 function renderTeeBoxSelect(selectedCourse) {
   currentGolfCourse = selectedCourse;
   teeBoxOptions = [];
@@ -96,7 +99,7 @@ function renderTeeBoxSelect(selectedCourse) {
 
   document.getElementById('tee-box-select').innerHTML = teeBoxSelectHtml;
 }
-
+//renders table
 function renderTable(selectedTeeBox) {
   currentTeeBox = selectedTeeBox;
   //Start of front9 render
