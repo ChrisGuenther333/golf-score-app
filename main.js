@@ -6,6 +6,7 @@ let players = []
 
 //Global click listener
 document.addEventListener("click", event => {
+  console.log(event.target)
   //Returns clicked course from course list
   if (event.target == document.getElementById('course-select')) {
     courses.forEach(course => {
@@ -61,6 +62,12 @@ document.addEventListener("click", event => {
       window.alert('You already have the maximum number of players.')
       playerName.value = ''
     }
+  }
+
+  //Checks if player table cell was clicked
+  else if (event.target.classList.contains('playerScoreCell')) {   
+    let newScore = window.prompt('Enter a score');
+    event.target.innerText = newScore;
   }
 });
 
@@ -180,13 +187,13 @@ function renderTable(selectedTeeBox) {
   //Renders players' names and scores
   if (players.length !== 0) {
     for (let i=0; i < players.length; i++) {
-      front9HTML += `<tr><td class="">${players[i].name}</td>`
+      front9HTML += `<tr><td>${players[i].name}</td>`
       for (let j=0; j < 9; j++) {
-        if (players[i].scores[j] != undefined) {
-          front9HTML += `<td>${players[i].scores[j]}</td>`
+        if (players[i].scores[j] !== undefined) {
+          front9HTML += `<td class="playerScoreCell ${players[i].name}Hole${j+1}Score">${players[i].scores[j]}</td>`
         }
         else {
-          front9HTML += `<td></td>`
+          front9HTML += `<td class="playerScoreCell ${players[i].name}Hole${j+1}Score"></td>`
         }
       }
     }
@@ -250,11 +257,11 @@ function renderTable(selectedTeeBox) {
     for (let i=0; i < players.length; i++) {
       back9HTML += `<tr><td>${players[i].name}</td>`
       for (let j=0; j < 9; j++) {
-        if (players[i].scores[j] != undefined) {
-          back9HTML += `<td>${players[i].scores[j]}</td>`
+        if (players[i].scores[j] !== undefined) {
+          back9HTML += `<td class="playerScoreCell ${players[i].name}Hole${j+1}Score">${players[i].scores[j]}</td>`
         }
         else {
-          back9HTML += `<td></td>`
+          back9HTML += `<td class="playerScoreCell ${players[i].name}Hole${j+10}Score"></td>`
         }
       }
     }
