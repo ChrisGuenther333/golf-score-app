@@ -65,17 +65,23 @@ document.addEventListener("click", event => {
   }
 
   //Checks if player table cell was clicked
-  else if (event.target.classList.contains('playerScoreCell')) {   
-    let newScore = window.prompt('Enter a score');
-    for (let i=0; i <players.length; i++) {
-      if (event.target.classList.contains(`${players[i].name}`)) {
-        players[i].scores.push(newScore)
-      }
-      else {
-        console.log(false)
+  else if (event.target.classList.contains('playerScoreCell')) {
+    for (let i=0; i < players.length; i++) {
+      for (let j=0; j < players[i].scores.length+1; j++) {
+        if (event.target.classList.contains(`${players[i].name}`) && event.target.classList.contains(`Hole${j+1}Score`)) {
+          if (event.target.innerText == '') {
+            let newScore = window.prompt('Enter a score');
+            if (newScore != null && newScore.trim() != '') {
+              players[i].scores.push(newScore)
+              renderTable(currentTeeBox)
+            }
+          }
+          else {
+            window.alert(`You've already added a score for this hole`)
+          }
+        }
       }
     }
-    renderTable(currentTeeBox)
   }
 });
 
