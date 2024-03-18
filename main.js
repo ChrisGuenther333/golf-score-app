@@ -249,19 +249,6 @@ function renderTable(selectedTeeBox) {
   document.getElementById('back9').innerHTML = back9HTML;
 }
 
-// //Runs when page loads
-// getAvailableGolfCourses().then(response => {
-//   courses = response;
-//   renderCoursesList()
-// })
-// // This code is broken
-// // .then(() => {
-// //   getGolfCourseDetails(courses[0].id)
-// // }).then(response => {
-// //   console.log(courses[0].id)
-// //   renderTeeBoxSelect(response)
-// // })
-
 //Runs when page loads
 getAvailableGolfCourses().then(response => {
   courses = response;
