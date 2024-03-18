@@ -42,12 +42,17 @@ document.addEventListener("click", event => {
   }
   //Button adds new player (up to 4)
   else if (event.target == document.getElementById('addPlayer')) {
+    const playerName = document.getElementById('new-list-name-input')
     if (players.length < 4) {
-      const playerName = document.getElementById('new-list-name-input')
       const playerId = Math.floor(Math.random() * 1000)
       const newPlayer = new Player(playerName.value, playerId)
       players.push(newPlayer)
+      playerName.value = ''
       renderTable(currentTeeBox)
+    }
+    else {
+      window.alert('You already have the max number of players.')
+      playerName.value = ''
     }
   }
 });
