@@ -46,14 +46,19 @@ document.addEventListener("click", event => {
   else if (event.target == document.getElementById('addPlayer')) {
     const playerName = document.getElementById('new-list-name-input')
     if (players.length < 4) {
-      const playerId = Math.floor(Math.random() * 1000)
-      const newPlayer = new Player(playerName.value, playerId)
-      players.push(newPlayer)
-      playerName.value = ''
-      renderTable(currentTeeBox)
+        if (playerName.value.trim() !== '') {
+          const playerId = Math.floor(Math.random() * 1000)
+          const newPlayer = new Player(playerName.value.trim(), playerId)
+          players.push(newPlayer)
+          playerName.value = ''
+          renderTable(currentTeeBox)
+        }
+        else {
+          window.alert('Please enter a player name.')
+        }
     }
     else {
-      window.alert('You already have the max number of players.')
+      window.alert('You already have the maximum number of players.')
       playerName.value = ''
     }
   }
@@ -99,7 +104,6 @@ function renderCoursesList() {
 //Renders tee box
 function renderTeeBoxSelect(selectedCourse) {
   currentGolfCourse = selectedCourse;
-  console.log(currentGolfCourse)
   teeBoxOptions = [];
   let teeBoxSelectHtml = '';
   //Returns tees for first hole of selected course
@@ -176,7 +180,7 @@ function renderTable(selectedTeeBox) {
   //Renders players' names and scores
   if (players.length !== 0) {
     for (let i=0; i < players.length; i++) {
-      front9HTML += `<tr><td>${players[i].name}</td>`
+      front9HTML += `<tr><td class="">${players[i].name}</td>`
       for (let j=0; j < 9; j++) {
         if (players[i].scores[j] != undefined) {
           front9HTML += `<td>${players[i].scores[j]}</td>`
@@ -189,7 +193,7 @@ function renderTable(selectedTeeBox) {
     front9HTML +=  '</tr>'
   }
   else {
-    console.log('There are no players currently')
+    front9HTML += ''
   }
   
   //Start of back9 render
@@ -257,7 +261,7 @@ function renderTable(selectedTeeBox) {
     back9HTML +=  '</tr>'
   }
   else {
-    console.log('There are no players currently')
+    back9HTML +=  ''
   }
 
   document.getElementById('front9').innerHTML = front9HTML;
