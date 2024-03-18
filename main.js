@@ -67,7 +67,15 @@ document.addEventListener("click", event => {
   //Checks if player table cell was clicked
   else if (event.target.classList.contains('playerScoreCell')) {   
     let newScore = window.prompt('Enter a score');
-    event.target.innerText = newScore;
+    for (let i=0; i <players.length; i++) {
+      if (event.target.classList.contains(`${players[i].name}`)) {
+        players[i].scores.push(newScore)
+      }
+      else {
+        console.log(false)
+      }
+    }
+    renderTable(currentTeeBox)
   }
 });
 
@@ -190,10 +198,10 @@ function renderTable(selectedTeeBox) {
       front9HTML += `<tr><td>${players[i].name}</td>`
       for (let j=0; j < 9; j++) {
         if (players[i].scores[j] !== undefined) {
-          front9HTML += `<td class="playerScoreCell ${players[i].name}Hole${j+1}Score">${players[i].scores[j]}</td>`
+          front9HTML += `<td class="playerScoreCell ${players[i].name} Hole${j+1}Score">${players[i].scores[j]}</td>`
         }
         else {
-          front9HTML += `<td class="playerScoreCell ${players[i].name}Hole${j+1}Score"></td>`
+          front9HTML += `<td class="playerScoreCell ${players[i].name} Hole${j+1}Score"></td>`
         }
       }
     }
@@ -256,12 +264,12 @@ function renderTable(selectedTeeBox) {
   if (players.length !== 0) {
     for (let i=0; i < players.length; i++) {
       back9HTML += `<tr><td>${players[i].name}</td>`
-      for (let j=0; j < 9; j++) {
+      for (let j=9; j < 18; j++) {
         if (players[i].scores[j] !== undefined) {
-          back9HTML += `<td class="playerScoreCell ${players[i].name}Hole${j+1}Score">${players[i].scores[j]}</td>`
+          back9HTML += `<td class="playerScoreCell ${players[i].name} Hole${j+1}Score">${players[i].scores[j]}</td>`
         }
         else {
-          back9HTML += `<td class="playerScoreCell ${players[i].name}Hole${j+10}Score"></td>`
+          back9HTML += `<td class="playerScoreCell ${players[i].name} Hole${j+10}Score"></td>`
         }
       }
     }
