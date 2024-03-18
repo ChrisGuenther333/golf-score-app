@@ -104,10 +104,19 @@ function renderTeeBoxSelect(selectedCourse) {
   let teeBoxSelectHtml = '';
   //Returns tees for first hole of selected course
   currentGolfCourse.holes[0].teeBoxes.forEach(function (teeBox, index) {
-    teeBoxSelectHtml += `<option value="${index}">${teeBox.teeType.toUpperCase()}, ${
-      teeBox.totalYards
-    } yards</option>`
-    teeBoxOptions.push(teeBox);
+    if (currentGolfCourse.id != 19002) {
+      teeBoxSelectHtml += `<option value="${index}">${teeBox.teeType.toUpperCase()}</option>`
+      teeBoxOptions.push(teeBox);
+    }
+    else {
+      if (teeBox.teeType != 'auto change location') {
+        teeBoxSelectHtml += `<option value="${index}">${teeBox.teeType.toUpperCase()}</option>`
+        teeBoxOptions.push(teeBox);
+      }
+      else {
+        teeBoxSelectHtml += ''
+      }
+    }
   });
 
   document.getElementById('tee-box-select').innerHTML = teeBoxSelectHtml;
