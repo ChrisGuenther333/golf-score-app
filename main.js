@@ -14,6 +14,7 @@ document.addEventListener("click", event => {
           //Gets selected course API then renders teeBox
           getGolfCourseDetails(course.id).then(response => {
             renderTeeBoxSelect(response);
+            renderTable(teeBoxOptions[0])
           })
         }
       }
@@ -46,7 +47,6 @@ document.addEventListener("click", event => {
       const playerId = Math.floor(Math.random() * 1000)
       const newPlayer = new Player(playerName.value, playerId)
       players.push(newPlayer)
-      console.log(players)
     }
   }
 });
@@ -87,6 +87,7 @@ function renderCoursesList() {
 //Renders tee box
 function renderTeeBoxSelect(selectedCourse) {
   currentGolfCourse = selectedCourse;
+  console.log(currentGolfCourse)
   teeBoxOptions = [];
   let teeBoxSelectHtml = '';
   //Returns tees for first hole of selected course
@@ -242,15 +243,25 @@ function renderTable(selectedTeeBox) {
   document.getElementById('back9').innerHTML = back9HTML;
 }
 
+// //Runs when page loads
+// getAvailableGolfCourses().then(response => {
+//   courses = response;
+//   renderCoursesList()
+// })
+// // This code is broken
+// // .then(() => {
+// //   getGolfCourseDetails(courses[0].id)
+// // }).then(response => {
+// //   console.log(courses[0].id)
+// //   renderTeeBoxSelect(response)
+// // })
+
 //Runs when page loads
 getAvailableGolfCourses().then(response => {
   courses = response;
   renderCoursesList()
+  getGolfCourseDetails(courses[0].id).then(response => {
+    renderTeeBoxSelect(response)
+    renderTable(teeBoxOptions[0])
+  })
 })
-// This code is broken
-// .then(() => {
-//   getGolfCourseDetails(courses[0].id)
-// }).then(response => {
-//   console.log(courses[0].id)
-//   renderTeeBoxSelect(response)
-// })
