@@ -26,9 +26,11 @@ document.getElementById('addPlayer').addEventListener('click', event => {
 });
 //Checks if Clear Scores button was clicked
 document.getElementById('resetCard').addEventListener('click', event => { 
-  if (window.confirm('Are you sure? This will delete all players and scores.')) {
-    players = []
-    renderTable(currentTeeBox)
+  if (players.length !== 0) {
+    if (window.confirm('Are you sure? This will delete all players and scores.')) {
+      players = []
+      renderTable(currentTeeBox)
+    }
   }
 });
 //Global click listener for dynamically created elements
