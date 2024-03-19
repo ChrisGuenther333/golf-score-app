@@ -4,9 +4,35 @@ let teeBoxOptions = [];
 let currentTeeBox = '';
 let players = []
 
-//Global click listener
+//Button adds new player (up to 4)
+document.getElementById('addPlayer').addEventListener('click', event => { 
+  const playerName = document.getElementById('new-list-name-input')
+  if (players.length < 4) {
+      if (playerName.value.trim() !== '') {
+        const playerId = Math.floor(Math.random() * 1000)
+        const newPlayer = new Player(playerName.value.trim(), playerId)
+        players.push(newPlayer)
+        playerName.value = ''
+        renderTable(currentTeeBox)
+      }
+      else {
+        window.alert('Please enter a player name.')
+      }
+  }
+  else {
+    window.alert('You already have the maximum number of players.')
+    playerName.value = ''
+  }
+});
+//Checks if Clear Scores button was clicked
+document.getElementById('resetCard').addEventListener('click', event => { 
+  if (window.confirm('Are you sure? This will delete all players and scores.')) {
+    players = []
+    renderTable(currentTeeBox)
+  }
+});
+//Global click listener for dynamically created elements
 document.addEventListener("click", event => {
-  console.log(event.target)
   //Returns clicked course from course list
   if (event.target == document.getElementById('course-select')) {
     courses.forEach(course => {
@@ -43,27 +69,6 @@ document.addEventListener("click", event => {
       }
     })
   }
-  //Button adds new player (up to 4)
-  else if (event.target == document.getElementById('addPlayer')) {
-    const playerName = document.getElementById('new-list-name-input')
-    if (players.length < 4) {
-        if (playerName.value.trim() !== '') {
-          const playerId = Math.floor(Math.random() * 1000)
-          const newPlayer = new Player(playerName.value.trim(), playerId)
-          players.push(newPlayer)
-          playerName.value = ''
-          renderTable(currentTeeBox)
-        }
-        else {
-          window.alert('Please enter a player name.')
-        }
-    }
-    else {
-      window.alert('You already have the maximum number of players.')
-      playerName.value = ''
-    }
-  }
-
   //Checks if player table cell was clicked
   else if (event.target.classList.contains('playerScoreCell')) {
     for (let i=0; i < players.length; i++) {
@@ -166,7 +171,6 @@ function renderTable(selectedTeeBox) {
   currentTeeBox = selectedTeeBox;
   const totals = {out: [], in: []}
   let yardTotals = 0
-  console.log(yardTotals)
   let parTotals = 0
   //Start of front9 render
   let front9HTML = '';
@@ -187,7 +191,6 @@ function renderTable(selectedTeeBox) {
       yardScore += currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-1].yards
     }
     yardTotals += yardScore
-    console.log(yardTotals)
     front9HTML += `<td class="out">${yardScore}</td>`
     front9HTML +=  '</tr>'
     //Render front9 par
@@ -217,7 +220,6 @@ function renderTable(selectedTeeBox) {
       yardScore += currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-2].yards
     }
     yardTotals += yardScore
-    console.log(yardTotals)
     front9HTML += `<td class="out">${yardScore}</td>`
     front9HTML +=  '</tr>'
     //Render front9 par
@@ -280,7 +282,6 @@ function renderTable(selectedTeeBox) {
       yardScore += currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-1].yards
     }
     yardTotals += yardScore
-    console.log(yardTotals)
     back9HTML += `<td class="in">${yardScore}</td>`
     back9HTML += `<td class="in">${yardTotals}</td>`
     back9HTML +=  '</tr>'
@@ -313,7 +314,6 @@ function renderTable(selectedTeeBox) {
       yardScore += currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-2].yards
     }
     yardTotals += yardScore
-    console.log(yardTotals)
     back9HTML += `<td class="in">${yardScore}</td>`
     back9HTML += `<td class="in">${yardTotals}</td>`
     back9HTML +=  '</tr>'
@@ -325,7 +325,6 @@ function renderTable(selectedTeeBox) {
       parScore += currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-1].par
     }
     parTotals += parScore
-    console.log(parTotals)
     back9HTML += `<td class="in">${parScore}</td>`
     back9HTML += `<td class="in">${parTotals}</td>`
     back9HTML +=  '</tr>'
