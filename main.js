@@ -68,7 +68,7 @@ document.addEventListener("click", event => {
   else if (event.target.classList.contains('playerScoreCell')) {
     for (let i=0; i < players.length; i++) {
       for (let j=0; j < players[i].scores.length+1; j++) {
-        if (event.target.classList.contains(`${players[i].name}`) && event.target.classList.contains(`Hole${j+1}Score`)) {
+        if (event.target.classList.contains(`${players[i].id}`) && event.target.classList.contains(`Hole${j+1}Score`)) {
           if (event.target.innerText == '') {
             let newScore = window.prompt('Enter a score');
             if (newScore != null && newScore.trim() != '') {
@@ -204,10 +204,10 @@ function renderTable(selectedTeeBox) {
       front9HTML += `<tr><td>${players[i].name}</td>`
       for (let j=0; j < 9; j++) {
         if (players[i].scores[j] !== undefined) {
-          front9HTML += `<td class="playerScoreCell ${players[i].name} Hole${j+1}Score">${players[i].scores[j]}</td>`
+          front9HTML += `<td class="playerScoreCell ${players[i].name} ${players[i].id} Hole${j+1}Score">${players[i].scores[j]}</td>`
         }
         else {
-          front9HTML += `<td class="playerScoreCell ${players[i].name} Hole${j+1}Score"></td>`
+          front9HTML += `<td class="playerScoreCell ${players[i].name} ${players[i].id} Hole${j+1}Score"></td>`
         }
       }
     }
@@ -272,10 +272,10 @@ function renderTable(selectedTeeBox) {
       back9HTML += `<tr><td>${players[i].name}</td>`
       for (let j=9; j < 18; j++) {
         if (players[i].scores[j] !== undefined) {
-          back9HTML += `<td class="playerScoreCell ${players[i].name} Hole${j+1}Score">${players[i].scores[j]}</td>`
+          back9HTML += `<td class="playerScoreCell ${players[i].name} ${players[i].id} Hole${j+1}Score">${players[i].scores[j]}</td>`
         }
         else {
-          back9HTML += `<td class="playerScoreCell ${players[i].name} Hole${j+10}Score"></td>`
+          back9HTML += `<td class="playerScoreCell ${players[i].name} ${players[i].id} Hole${j+10}Score"></td>`
         }
       }
     }
