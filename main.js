@@ -77,7 +77,11 @@ document.addEventListener("click", event => {
             }
           }
           else {
-            window.alert(`You've already added a score for this hole`)
+            let changeScore = window.prompt('Enter a new score');
+            if (changeScore != null && changeScore.trim() != '') {
+              players[i].scores[j] = changeScore
+              renderTable(currentTeeBox)
+            }
           }
         }
       }
