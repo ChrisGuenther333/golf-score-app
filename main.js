@@ -72,15 +72,26 @@ document.addEventListener("click", event => {
           if (event.target.innerText == '') {
             let newScore = window.prompt('Enter a score');
             if (newScore != null && newScore.trim() != '') {
-              players[i].scores.push(newScore)
-              renderTable(currentTeeBox)
+              if (newScore.match(/^[0-9]+$/) && newScore.length <= 2) {
+                players[i].scores.push(newScore)
+                renderTable(currentTeeBox)
+              }
+              else {
+                window.alert('That is not a valid entry.')
+              }
+             
             }
           }
           else {
             let changeScore = window.prompt('Enter a new score');
             if (changeScore != null && changeScore.trim() != '') {
-              players[i].scores[j] = changeScore
-              renderTable(currentTeeBox)
+              if (changeScore.match(/^[0-9]+$/) && changeScore.length <= 2) {
+                players[i].scores[j] = changeScore
+                renderTable(currentTeeBox)
+              }
+              else {
+                window.alert('That is not a valid entry.')
+              }
             }
           }
         }
@@ -153,6 +164,10 @@ function renderTeeBoxSelect(selectedCourse) {
 //renders table
 function renderTable(selectedTeeBox) {
   currentTeeBox = selectedTeeBox;
+  const totals = {out: [], in: []}
+  let yardTotals = 0
+  console.log(yardTotals)
+  let parTotals = 0
   //Start of front9 render
   let front9HTML = '';
   //Render front9 headers
@@ -160,60 +175,84 @@ function renderTable(selectedTeeBox) {
   for (let i=0; i < 9; i++) {
     front9HTML += `<th>${currentGolfCourse.holes[i].hole}</th>`
   }
+  front9HTML += `<th>Out</th>`
   front9HTML += '</tr>'
   //Checking if Spanish Oaks Golf Course
   if(currentGolfCourse.id != 19002) {
     //Render front9 yardage
+    let yardScore = 0;
     front9HTML +=  '<tr><td>Yardage</td>'
     for (let i=0; i < 9; i++) {
       front9HTML += `<td>${currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-1].yards}</td>`
+      yardScore += currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-1].yards
     }
+    yardTotals += yardScore
+    console.log(yardTotals)
+    front9HTML += `<td class="out">${yardScore}</td>`
     front9HTML +=  '</tr>'
     //Render front9 par
+    let parScore = 0;
     front9HTML +=  '<tr><td>Par</td>'
     for (let i=0; i < 9; i++) {
       front9HTML += `<td>${currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-1].par}</td>`
+      parScore += currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-1].par
     }
+    parTotals += parScore
+    front9HTML += `<td class="out">${parScore}</td>`
     front9HTML +=  '</tr>'
     //Render front9 handicap
     front9HTML +=  '<tr><td>Handicap</td>'
     for (let i=0; i < 9; i++) {
       front9HTML += `<td>${currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-1].hcp}</td>`
     }
+    front9HTML += `<td>N/A</td>`
     front9HTML +=  '</tr>'
   }
   else {
     //Render front9 yardage
+    let yardScore = 0;
     front9HTML +=  '<tr><td>Yardage</td>'
     for (let i=0; i < 9; i++) {
       front9HTML += `<td>${currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-2].yards}</td>`
+      yardScore += currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-2].yards
     }
+    yardTotals += yardScore
+    console.log(yardTotals)
+    front9HTML += `<td class="out">${yardScore}</td>`
     front9HTML +=  '</tr>'
     //Render front9 par
+    let parScore = 0;
     front9HTML +=  '<tr><td>Par</td>'
     for (let i=0; i < 9; i++) {
       front9HTML += `<td>${currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-2].par}</td>`
+      parScore += currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-1].par
     }
+    parTotals += parScore
+    front9HTML += `<td class="out">${parScore}</td>`
     front9HTML +=  '</tr>'
     //Render front9 handicap
     front9HTML +=  '<tr><td>Handicap</td>'
     for (let i=0; i < 9; i++) {
       front9HTML += `<td>${currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-2].hcp}</td>`
     }
+    front9HTML += `<td>N/A</td>`
     front9HTML +=  '</tr>'
   }  
   //Renders players' names and scores
   if (players.length !== 0) {
     for (let i=0; i < players.length; i++) {
+      let playerScore = 0;
       front9HTML += `<tr><td>${players[i].name}</td>`
       for (let j=0; j < 9; j++) {
         if (players[i].scores[j] !== undefined) {
           front9HTML += `<td class="playerScoreCell ${players[i].name} ${players[i].id} Hole${j+1}Score">${players[i].scores[j]}</td>`
+          playerScore += Number(players[i].scores[j])
         }
         else {
           front9HTML += `<td class="playerScoreCell ${players[i].name} ${players[i].id} Hole${j+1}Score"></td>`
         }
       }
+      front9HTML += `<td class="out">${playerScore}</td>`
     }
     front9HTML +=  '</tr>'
   }
@@ -221,72 +260,109 @@ function renderTable(selectedTeeBox) {
     front9HTML += ''
   }
   
-  //Start of back9 render
+  //Start of back9HTML render
   let back9HTML = '';
-  //Render back9 headers
+  //Render back9HTML headers
   back9HTML += '<tr><th>Hole</th>';
   for (let i=9; i < currentGolfCourse.holes.length; i++) {
     back9HTML += `<th>${currentGolfCourse.holes[i].hole}</th>`
   }
+  back9HTML += `<th>In</th>`
+  back9HTML += `<th>Total</th>`
   back9HTML += '</tr>'
   //Checking if Spanish Oaks Golf Course
   if(currentGolfCourse.id != 19002) {
-    //Render back9 yardage
+    //Render back9HTML yardage
+    let yardScore = 0;
     back9HTML +=  '<tr><td>Yardage</td>'
     for (let i=9; i < currentGolfCourse.holes.length; i++) {
       back9HTML += `<td>${currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-1].yards}</td>`
+      yardScore += currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-1].yards
     }
+    yardTotals += yardScore
+    console.log(yardTotals)
+    back9HTML += `<td class="in">${yardScore}</td>`
+    back9HTML += `<td class="in">${yardTotals}</td>`
     back9HTML +=  '</tr>'
-    //Render back9 par
+    //Render back9HTML par
+    let parScore = 0;
     back9HTML +=  '<tr><td>Par</td>'
     for (let i=9; i < currentGolfCourse.holes.length; i++) {
       back9HTML += `<td>${currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-1].par}</td>`
+      parScore += currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-1].par
     }
+    parTotals += parScore
+    back9HTML += `<td class="in">${parScore}</td>`
+    back9HTML += `<td class="in">${parTotals}</td>`
     back9HTML +=  '</tr>'
-    //Render back9 handicap
+    //Render back9HTML handicap
     back9HTML +=  '<tr><td>Handicap</td>'
     for (let i=9; i < currentGolfCourse.holes.length; i++) {
       back9HTML += `<td>${currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-1].hcp}</td>`
     }
+    back9HTML += `<td>N/A</td>`
+    back9HTML += `<td>N/A</td>`
     back9HTML +=  '</tr>'
   }
   else {
-    //Render back9 yardage
+    //Render back9HTML yardage
+    let yardScore = 0;
     back9HTML +=  '<tr><td>Yardage</td>'
     for (let i=9; i < currentGolfCourse.holes.length; i++) {
       back9HTML += `<td>${currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-2].yards}</td>`
+      yardScore += currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-2].yards
     }
+    yardTotals += yardScore
+    console.log(yardTotals)
+    back9HTML += `<td class="in">${yardScore}</td>`
+    back9HTML += `<td class="in">${yardTotals}</td>`
     back9HTML +=  '</tr>'
-    //Render back9 par
+    //Render back9HTML par
+    let parScore = 0;
     back9HTML +=  '<tr><td>Par</td>'
     for (let i=9; i < currentGolfCourse.holes.length; i++) {
       back9HTML += `<td>${currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-2].par}</td>`
+      parScore += currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-1].par
     }
+    parTotals += parScore
+    console.log(parTotals)
+    back9HTML += `<td class="in">${parScore}</td>`
+    back9HTML += `<td class="in">${parTotals}</td>`
     back9HTML +=  '</tr>'
-    //Render back9 handicap
+    //Render back9HTML handicap
     back9HTML +=  '<tr><td>Handicap</td>'
     for (let i=9; i < currentGolfCourse.holes.length; i++) {
       back9HTML += `<td>${currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-2].hcp}</td>`
     }
+    back9HTML += `<td>N/A</td>`
+    back9HTML += `<td>N/A</td>`
     back9HTML +=  '</tr>'
-  }
+  }  
   //Renders players' names and scores
   if (players.length !== 0) {
     for (let i=0; i < players.length; i++) {
+      let playerScore = 0;
+      let playerTotalScore = 0;
       back9HTML += `<tr><td>${players[i].name}</td>`
+      for (let j=0; j < players[i].scores.length; j++) {
+        playerTotalScore += Number(players[i].scores[j])
+      }
       for (let j=9; j < 18; j++) {
         if (players[i].scores[j] !== undefined) {
           back9HTML += `<td class="playerScoreCell ${players[i].name} ${players[i].id} Hole${j+1}Score">${players[i].scores[j]}</td>`
+          playerScore += Number(players[i].scores[j])
         }
         else {
-          back9HTML += `<td class="playerScoreCell ${players[i].name} ${players[i].id} Hole${j+10}Score"></td>`
+          back9HTML += `<td class="playerScoreCell ${players[i].name} ${players[i].id} Hole${j+1}Score"></td>`
         }
       }
+      back9HTML += `<td class="in">${playerScore}</td>`
+      back9HTML += `<td class="in">${playerTotalScore}</td>`
     }
     back9HTML +=  '</tr>'
   }
   else {
-    back9HTML +=  ''
+    back9HTML += ''
   }
 
   document.getElementById('front9').innerHTML = front9HTML;
