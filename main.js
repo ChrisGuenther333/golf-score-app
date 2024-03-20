@@ -79,7 +79,7 @@ document.addEventListener("click", event => {
           if (event.target.innerText == '') {
             let newScore = window.prompt('Enter a score');
             if (newScore != null && newScore.trim() != '') {
-              if (newScore.match(/^[0-9]+$/) && newScore.length <= 2) {
+              if (newScore.match(/^[0-9]+$|-/) && newScore !== '--' && newScore.length <= 3) {
                 players[i].scores.push(newScore)
                 renderTable(currentTeeBox)
               }
@@ -92,7 +92,7 @@ document.addEventListener("click", event => {
           else {
             let changeScore = window.prompt('Enter a new score');
             if (changeScore != null && changeScore.trim() != '') {
-              if (changeScore.match(/^[0-9]+$/) && changeScore.length <= 2) {
+              if (changeScore.match(/^[0-9]+$|-/) && changeScore !== '--' && changeScore.length <= 3) {
                 players[i].scores[j] = changeScore
                 renderTable(currentTeeBox)
               }
@@ -168,16 +168,15 @@ function renderTeeBoxSelect(selectedCourse) {
 
   document.getElementById('tee-box-select').innerHTML = teeBoxSelectHtml;
 }
-//renders table
+//Renders table
 function renderTable(selectedTeeBox) {
   currentTeeBox = selectedTeeBox;
-  const totals = {out: [], in: []}
   let yardTotals = 0
   let parTotals = 0
   //Start of front9 render
   let front9HTML = '';
   //Render front9 headers
-  front9HTML += '<tr><th>Hole</th>';
+  front9HTML += '<tr class="table-success"><th>Hole</th>';
   for (let i=0; i < 9; i++) {
     front9HTML += `<th>${currentGolfCourse.holes[i].hole}</th>`
   }
@@ -187,7 +186,7 @@ function renderTable(selectedTeeBox) {
   if(currentGolfCourse.id != 19002) {
     //Render front9 yardage
     let yardScore = 0;
-    front9HTML +=  '<tr><td>Yardage</td>'
+    front9HTML +=  '<tr class="table-primary"><td>Yardage</td>'
     for (let i=0; i < 9; i++) {
       front9HTML += `<td>${currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-1].yards}</td>`
       yardScore += currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-1].yards
@@ -197,7 +196,7 @@ function renderTable(selectedTeeBox) {
     front9HTML +=  '</tr>'
     //Render front9 par
     let parScore = 0;
-    front9HTML +=  '<tr><td>Par</td>'
+    front9HTML +=  '<tr class="table-success"><td>Par</td>'
     for (let i=0; i < 9; i++) {
       front9HTML += `<td>${currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-1].par}</td>`
       parScore += currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-1].par
@@ -206,7 +205,7 @@ function renderTable(selectedTeeBox) {
     front9HTML += `<td class="out">${parScore}</td>`
     front9HTML +=  '</tr>'
     //Render front9 handicap
-    front9HTML +=  '<tr><td>Handicap</td>'
+    front9HTML +=  '<tr class="table-primary"><td>Handicap</td>'
     for (let i=0; i < 9; i++) {
       front9HTML += `<td>${currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-1].hcp}</td>`
     }
@@ -216,7 +215,7 @@ function renderTable(selectedTeeBox) {
   else {
     //Render front9 yardage
     let yardScore = 0;
-    front9HTML +=  '<tr><td>Yardage</td>'
+    front9HTML +=  '<tr class="table-primary"><td>Yardage</td>'
     for (let i=0; i < 9; i++) {
       front9HTML += `<td>${currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-2].yards}</td>`
       yardScore += currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-2].yards
@@ -226,7 +225,7 @@ function renderTable(selectedTeeBox) {
     front9HTML +=  '</tr>'
     //Render front9 par
     let parScore = 0;
-    front9HTML +=  '<tr><td>Par</td>'
+    front9HTML +=  '<tr class="table-success"><td>Par</td>'
     for (let i=0; i < 9; i++) {
       front9HTML += `<td>${currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-2].par}</td>`
       parScore += currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-1].par
@@ -235,7 +234,7 @@ function renderTable(selectedTeeBox) {
     front9HTML += `<td class="out">${parScore}</td>`
     front9HTML +=  '</tr>'
     //Render front9 handicap
-    front9HTML +=  '<tr><td>Handicap</td>'
+    front9HTML +=  '<tr class="table-primary"><td>Handicap</td>'
     for (let i=0; i < 9; i++) {
       front9HTML += `<td>${currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-2].hcp}</td>`
     }
@@ -246,7 +245,7 @@ function renderTable(selectedTeeBox) {
   if (players.length !== 0) {
     for (let i=0; i < players.length; i++) {
       let playerScore = 0;
-      front9HTML += `<tr><td>${players[i].name}</td>`
+      front9HTML += `<tr class="table-warning"><td>${players[i].name}</td>`
       for (let j=0; j < 9; j++) {
         if (players[i].scores[j] !== undefined) {
           front9HTML += `<td class="playerScoreCell ${players[i].name} ${players[i].id} Hole${j+1}Score">${players[i].scores[j]}</td>`
@@ -267,7 +266,7 @@ function renderTable(selectedTeeBox) {
   //Start of back9HTML render
   let back9HTML = '';
   //Render back9HTML headers
-  back9HTML += '<tr><th>Hole</th>';
+  back9HTML += '<tr class="table-success"><th>Hole</th>';
   for (let i=9; i < currentGolfCourse.holes.length; i++) {
     back9HTML += `<th>${currentGolfCourse.holes[i].hole}</th>`
   }
@@ -278,7 +277,7 @@ function renderTable(selectedTeeBox) {
   if(currentGolfCourse.id != 19002) {
     //Render back9HTML yardage
     let yardScore = 0;
-    back9HTML +=  '<tr><td>Yardage</td>'
+    back9HTML +=  '<tr class="table-primary"><td>Yardage</td>'
     for (let i=9; i < currentGolfCourse.holes.length; i++) {
       back9HTML += `<td>${currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-1].yards}</td>`
       yardScore += currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-1].yards
@@ -289,7 +288,7 @@ function renderTable(selectedTeeBox) {
     back9HTML +=  '</tr>'
     //Render back9HTML par
     let parScore = 0;
-    back9HTML +=  '<tr><td>Par</td>'
+    back9HTML +=  '<tr class="table-success"><td>Par</td>'
     for (let i=9; i < currentGolfCourse.holes.length; i++) {
       back9HTML += `<td>${currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-1].par}</td>`
       parScore += currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-1].par
@@ -299,7 +298,7 @@ function renderTable(selectedTeeBox) {
     back9HTML += `<td class="in">${parTotals}</td>`
     back9HTML +=  '</tr>'
     //Render back9HTML handicap
-    back9HTML +=  '<tr><td>Handicap</td>'
+    back9HTML +=  '<tr class="table-primary"><td>Handicap</td>'
     for (let i=9; i < currentGolfCourse.holes.length; i++) {
       back9HTML += `<td>${currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-1].hcp}</td>`
     }
@@ -310,7 +309,7 @@ function renderTable(selectedTeeBox) {
   else {
     //Render back9HTML yardage
     let yardScore = 0;
-    back9HTML +=  '<tr><td>Yardage</td>'
+    back9HTML +=  '<tr class="table-primary"><td>Yardage</td>'
     for (let i=9; i < currentGolfCourse.holes.length; i++) {
       back9HTML += `<td>${currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-2].yards}</td>`
       yardScore += currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-2].yards
@@ -321,7 +320,7 @@ function renderTable(selectedTeeBox) {
     back9HTML +=  '</tr>'
     //Render back9HTML par
     let parScore = 0;
-    back9HTML +=  '<tr><td>Par</td>'
+    back9HTML +=  '<tr class="table-success"><td>Par</td>'
     for (let i=9; i < currentGolfCourse.holes.length; i++) {
       back9HTML += `<td>${currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-2].par}</td>`
       parScore += currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-1].par
@@ -331,7 +330,7 @@ function renderTable(selectedTeeBox) {
     back9HTML += `<td class="in">${parTotals}</td>`
     back9HTML +=  '</tr>'
     //Render back9HTML handicap
-    back9HTML +=  '<tr><td>Handicap</td>'
+    back9HTML +=  '<tr class="table-primary"><td>Handicap</td>'
     for (let i=9; i < currentGolfCourse.holes.length; i++) {
       back9HTML += `<td>${currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-2].hcp}</td>`
     }
@@ -344,7 +343,7 @@ function renderTable(selectedTeeBox) {
     for (let i=0; i < players.length; i++) {
       let playerScore = 0;
       let playerTotalScore = 0;
-      back9HTML += `<tr><td>${players[i].name}</td>`
+      back9HTML += `<tr class="table-warning"><td>${players[i].name}</td>`
       for (let j=0; j < players[i].scores.length; j++) {
         playerTotalScore += Number(players[i].scores[j])
       }
