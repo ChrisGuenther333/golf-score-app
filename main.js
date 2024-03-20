@@ -151,7 +151,7 @@ function renderTeeBoxSelect(selectedCourse) {
   let teeBoxSelectHtml = '';
   //Returns tees for first hole of selected course
   currentGolfCourse.holes[0].teeBoxes.forEach(function (teeBox, index) {
-    if (currentGolfCourse.id != 19002) {
+    if (currentGolfCourse.id != 18300) {
       teeBoxSelectHtml += `<option value="${index}">${teeBox.teeType.toUpperCase()}</option>`
       teeBoxOptions.push(teeBox);
     }
@@ -228,7 +228,7 @@ function renderTable(selectedTeeBox) {
     front9HTML +=  '<tr class="table-success"><td>Par</td>'
     for (let i=0; i < 9; i++) {
       front9HTML += `<td>${currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-2].par}</td>`
-      parScore += currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-1].par
+      parScore += currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-2].par
     }
     parTotals += parScore
     front9HTML += `<td class="out">${parScore}</td>`
@@ -323,7 +323,7 @@ function renderTable(selectedTeeBox) {
     back9HTML +=  '<tr class="table-success"><td>Par</td>'
     for (let i=9; i < currentGolfCourse.holes.length; i++) {
       back9HTML += `<td>${currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-2].par}</td>`
-      parScore += currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-1].par
+      parScore += currentGolfCourse.holes[i].teeBoxes[currentTeeBox.teeTypeId-2].par
     }
     parTotals += parScore
     back9HTML += `<td class="in">${parScore}</td>`
