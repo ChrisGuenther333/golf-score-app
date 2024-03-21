@@ -33,46 +33,42 @@ document.getElementById('resetCard').addEventListener('click', event => {
     }
   }
 });
-//Checks for changes in lists
-document.addEventListener('change', event => {
-  //Returns clicked course from course list
-  if (event.target == document.getElementById('course-select')) {
-    courses.forEach(course => {
-      if (course.id == event.target.value) {
-        if (currentGolfCourse.id != course.id) {
-          //Gets selected course API then renders teeBox
-          getGolfCourseDetails(course.id).then(response => {
-            renderTeeBoxSelect(response);
-            renderTable(teeBoxOptions[0])
-          }).catch(error => {
-            console.error('An error occurred: ', error);
-          })
+//Checks for changes in course list and returns selected course
+document.getElementById('course-select').addEventListener('change', event => {
+  courses.forEach(course => {
+    if (course.id == event.target.value) {
+      if (currentGolfCourse.id != course.id) {
+        //Gets selected course API then renders teeBox
+        getGolfCourseDetails(course.id).then(response => {
+          renderTeeBoxSelect(response);
+          renderTable(teeBoxOptions[0])
+        }).catch(error => {
+          console.error('An error occurred: ', error);
+        })
+      }
+    }
+  })
+});
+//Checks for changes in tee list and returns selected tee
+document.getElementById('tee-box-select').addEventListener('change', event => {
+  teeBoxOptions.forEach(teeBox => {
+    //Checking if Spanish Oaks Golf Course then renders table
+    if(currentGolfCourse.id != 19002) {
+      if (event.target.value == (teeBox.teeTypeId - 1)) {
+        if (currentTeeBox.courseHoleTeeBoxId != teeBox.courseHoleTeeBoxId) {
+          renderTable(teeBox);
         }
       }
-    })
-  }
-  //Returns clicked tee fromo tee list
-  else if (event.target == document.getElementById('tee-box-select')) {
-    teeBoxOptions.forEach(teeBox => {
-      //Checking if Spanish Oaks Golf Course then renders table
-      if(currentGolfCourse.id != 19002) {
-        if (event.target.value == (teeBox.teeTypeId - 1)) {
-          if (currentTeeBox.courseHoleTeeBoxId != teeBox.courseHoleTeeBoxId) {
-            renderTable(teeBox);
-          }
+    }
+    else {
+      if (event.target.value == (teeBox.teeTypeId - 2)) {
+        if (currentTeeBox.courseHoleTeeBoxId != teeBox.courseHoleTeeBoxId) {
+          renderTable(teeBox);
         }
       }
-      else {
-        if (event.target.value == (teeBox.teeTypeId - 2)) {
-          if (currentTeeBox.courseHoleTeeBoxId != teeBox.courseHoleTeeBoxId) {
-            renderTable(teeBox);
-          }
-        }
-      }
-    })
-  }
-})
-
+    }
+  })
+});
 //Global click listener for dynamically created elements
 document.addEventListener('click', event => {
   //Checks if player table cell was clicked
