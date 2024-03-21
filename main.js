@@ -33,8 +33,8 @@ document.getElementById('resetCard').addEventListener('click', event => {
     }
   }
 });
-//Global click listener for dynamically created elements
-document.addEventListener("click", event => {
+//Checks for changes in lists
+document.addEventListener('change', event => {
   //Returns clicked course from course list
   if (event.target == document.getElementById('course-select')) {
     courses.forEach(course => {
@@ -71,8 +71,12 @@ document.addEventListener("click", event => {
       }
     })
   }
+})
+
+//Global click listener for dynamically created elements
+document.addEventListener('click', event => {
   //Checks if player table cell was clicked
-  else if (event.target.classList.contains('playerScoreCell')) {
+  if (event.target.classList.contains('playerScoreCell')) {
     for (let i=0; i < players.length; i++) {
       for (let j=0; j < players[i].scores.length+1; j++) {
         if (event.target.classList.contains(`${players[i].id}`) && event.target.classList.contains(`Hole${j+1}Score`)) {
