@@ -9,4 +9,4 @@ In this app you can:
 - Add and edit scores for each hole by clicking on the corresponding player cell (You can't add scores for a hole if the previous hole hasn't been completed yet)
 - See the out, in, and total scores  
   
-This app was made with HTML, Bootstrap, and Javascript
+This app was made with Javascript, Bootstrap, and HTML
