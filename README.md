@@ -1,7 +1,7 @@
 # Golf-Score-App
 View live project demo [here](https://chrisguenther333.github.io/golf-score-app/)  
 
-In this app you can:  
+In this app you can:
 - Select from 3 different golf courses
 - Select from the different tees of each course
 - Add up to 4 players
