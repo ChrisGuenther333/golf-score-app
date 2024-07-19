@@ -246,31 +246,41 @@ function renderTable(selectedTeeBox) {
     front9HTML +=  '</tr>'
   }  
   //Renders players' names and scores
-  if (players.length !== 0) {
-    console.log(players)
+  let playerScore = 0;
+  if (players.length > 0) {
+    //Goes through player list
     for (let i=0; i < players.length; i++) {
-      let playerScore = 0;
+      //Adds cell with player's name
       front9HTML += `<tr class="table-warning"><td>${players[i].name}</td>`
+      //Runs through first 9 holes
       for (let j=0; j < 9; j++) {
+        //Checks for any scores
         if (players[i].scores.length > 0) {
-          const findMatch = players[i].scores.find(n => players[i].scores[n].id === `Hole${j+1}Score`)
-
+          //Searches for player score id that matches cell id
+          const findMatch = players[i].scores.find(n => n.id === `Hole${j+1}Score`)
+          //If a match was found generate cell with score and add to playerScore
           if (findMatch) {
-            front9HTML += `<td class="playerScoreCell ${players[i].name} ${players[i].id} Hole${j+1}Score">${players[i].scores[findMatch].score}</td>`
-            playerScore += Number(players[i].scores[j].score) 
+            front9HTML += `<td class="playerScoreCell ${players[i].name} ${players[i].id} Hole${j+1}Score">${findMatch.score}</td>`
+            playerScore += Number(findMatch.score) 
           }
+          //If no match was found, generate blank cell
           else {
             front9HTML += `<td class="playerScoreCell ${players[i].name} ${players[i].id} Hole${j+1}Score"></td>`
           }
         }
-        front9HTML += `<td class="playerScoreCell ${players[i].name} ${players[i].id} Hole${j+1}Score"></td>`
-
+        //If no scores just renders blank cells
+        else {
+          front9HTML += `<td class="playerScoreCell ${players[i].name} ${players[i].id} Hole${j+1}Score"></td>`
+        }
       }
+      //Renders Out score
       front9HTML += `<td class="out">${playerScore}</td>`
     }
+    //Closes off table row
     front9HTML +=  '</tr>'
   }
   else {
+    //Renders nothing if no players
     front9HTML += ''
   }
   
@@ -352,17 +362,21 @@ function renderTable(selectedTeeBox) {
   //Renders players' names and scores
   if (players.length !== 0) {
     for (let i=0; i < players.length; i++) {
-      let playerScore = 0;
-      let playerTotalScore = 0;
+      let playerTotalScore = playerScore;
+      playerScore = 0;
       back9HTML += `<tr class="table-warning"><td>${players[i].name}</td>`
-      // for (let j=9; j < 18; j++) {
-        
-      // }
       for (let j=9; j < 18; j++) {
-        if (players[i].scores[j] !== undefined) {
-          back9HTML += `<td class="playerScoreCell ${players[i].name} ${players[i].id} Hole${j+1}Score">${players[i].scores[j].score}</td>`
-          playerScore += Number(players[i].scores[j].score)
-          playerTotalScore += Number(players[i].scores[j].score)
+        if (players[i].scores.length > 0) {
+          const findMatch = players[i].scores.find(n => n.id === `Hole${j+1}Score`)
+          
+          if (findMatch) {
+            back9HTML += `<td class="playerScoreCell ${players[i].name} ${players[i].id} Hole${j+1}Score">${findMatch.score}</td>`
+            playerScore += Number(findMatch.score)
+            playerTotalScore += Number(findMatch.score) 
+          }
+          else {
+            back9HTML += `<td class="playerScoreCell ${players[i].name} ${players[i].id} Hole${j+1}Score"></td>`
+          }
         }
         else {
           back9HTML += `<td class="playerScoreCell ${players[i].name} ${players[i].id} Hole${j+1}Score"></td>`

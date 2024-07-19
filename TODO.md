@@ -1,8 +1,7 @@
 # To-Do
 - Left off at line 258
 - [ ] Change it so that text box appears when entering/editing scores, not alert
-- [ ] Change it so that you can add scores to any hole
-  - Or at least be notified that you can't add a score to that section yet until previous one is completed
+- [x] Change it so that you can add scores to any hole
 - [ ] Update UI to make it more appealing
   - Maybe add a score reference guide ?
 - [ ] Make sure app is responsive
