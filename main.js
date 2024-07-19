@@ -74,13 +74,17 @@ document.addEventListener('click', event => {
   //Checks if player table cell was clicked
   if (event.target.classList.contains('playerScoreCell')) {
     for (let i=0; i < players.length; i++) {
-      for (let j=0; j < players[i].scores.length+1; j++) {
+      for (let j=0; j < 18; j++) {
         if (event.target.classList.contains(`${players[i].id}`) && event.target.classList.contains(`Hole${j+1}Score`)) {
           if (event.target.innerText == '') {
             let newScore = window.prompt('Enter a score');
             if (newScore != null && newScore.trim() != '') {
               if (newScore.match(/^[0-9]+$|-/) && newScore !== '--' && newScore.length <= 3) {
-                players[i].scores.push(newScore)
+                players[i].scores.push(
+                {
+                  score: newScore,
+                  id: `Hole${j+1}Score`
+                })
                 renderTable(currentTeeBox)
               }
               else {
@@ -93,7 +97,7 @@ document.addEventListener('click', event => {
             let changeScore = window.prompt('Enter a new score');
             if (changeScore != null && changeScore.trim() != '') {
               if (changeScore.match(/^[0-9]+$|-/) && changeScore !== '--' && changeScore.length <= 3) {
-                players[i].scores[j] = changeScore
+                players[i].scores[j].score = changeScore
                 renderTable(currentTeeBox)
               }
               else {
@@ -243,17 +247,24 @@ function renderTable(selectedTeeBox) {
   }  
   //Renders players' names and scores
   if (players.length !== 0) {
+    console.log(players)
     for (let i=0; i < players.length; i++) {
       let playerScore = 0;
       front9HTML += `<tr class="table-warning"><td>${players[i].name}</td>`
       for (let j=0; j < 9; j++) {
-        if (players[i].scores[j] !== undefined) {
-          front9HTML += `<td class="playerScoreCell ${players[i].name} ${players[i].id} Hole${j+1}Score">${players[i].scores[j]}</td>`
-          playerScore += Number(players[i].scores[j])
+        if (players[i].scores.length > 0) {
+          const findMatch = players[i].scores.find(n => players[i].scores[n].id === `Hole${j+1}Score`)
+
+          if (findMatch) {
+            front9HTML += `<td class="playerScoreCell ${players[i].name} ${players[i].id} Hole${j+1}Score">${players[i].scores[findMatch].score}</td>`
+            playerScore += Number(players[i].scores[j].score) 
+          }
+          else {
+            front9HTML += `<td class="playerScoreCell ${players[i].name} ${players[i].id} Hole${j+1}Score"></td>`
+          }
         }
-        else {
-          front9HTML += `<td class="playerScoreCell ${players[i].name} ${players[i].id} Hole${j+1}Score"></td>`
-        }
+        front9HTML += `<td class="playerScoreCell ${players[i].name} ${players[i].id} Hole${j+1}Score"></td>`
+
       }
       front9HTML += `<td class="out">${playerScore}</td>`
     }
@@ -344,13 +355,14 @@ function renderTable(selectedTeeBox) {
       let playerScore = 0;
       let playerTotalScore = 0;
       back9HTML += `<tr class="table-warning"><td>${players[i].name}</td>`
-      for (let j=0; j < players[i].scores.length; j++) {
-        playerTotalScore += Number(players[i].scores[j])
-      }
+      // for (let j=9; j < 18; j++) {
+        
+      // }
       for (let j=9; j < 18; j++) {
         if (players[i].scores[j] !== undefined) {
-          back9HTML += `<td class="playerScoreCell ${players[i].name} ${players[i].id} Hole${j+1}Score">${players[i].scores[j]}</td>`
-          playerScore += Number(players[i].scores[j])
+          back9HTML += `<td class="playerScoreCell ${players[i].name} ${players[i].id} Hole${j+1}Score">${players[i].scores[j].score}</td>`
+          playerScore += Number(players[i].scores[j].score)
+          playerTotalScore += Number(players[i].scores[j].score)
         }
         else {
           back9HTML += `<td class="playerScoreCell ${players[i].name} ${players[i].id} Hole${j+1}Score"></td>`
