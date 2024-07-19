@@ -7,6 +7,7 @@
 - [ ] Make sure app is responsive
 - [ ] Make sure app is accessible
 ## Potential Future Features
+- Refactor code
 - Allow user to change player names
 - Pressing enter allows you to Add Player
 - Add delete button to each individual player

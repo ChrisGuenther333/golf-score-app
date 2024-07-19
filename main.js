@@ -78,6 +78,7 @@ document.addEventListener('click', event => {
         if (event.target.classList.contains(`${players[i].id}`) && event.target.classList.contains(`Hole${j+1}Score`)) {
           if (event.target.innerText == '') {
             let newScore = window.prompt('Enter a score');
+            // event.target.innerHTML = `<input type='text' value='Enter score'>`
             if (newScore != null && newScore.trim() != '') {
               if (newScore.match(/^[0-9]+$|-/) && newScore !== '--' && newScore.length <= 3) {
                 players[i].scores.push(
@@ -97,8 +98,11 @@ document.addEventListener('click', event => {
             let changeScore = window.prompt('Enter a new score');
             if (changeScore != null && changeScore.trim() != '') {
               if (changeScore.match(/^[0-9]+$|-/) && changeScore !== '--' && changeScore.length <= 3) {
-                players[i].scores[j].score = changeScore
-                renderTable(currentTeeBox)
+                const findMatch = players[i].scores.find(n => n.id === `Hole${j+1}Score`)
+                  if (findMatch) {
+                    findMatch.score = changeScore
+                    renderTable(currentTeeBox)
+                  }
               }
               else {
                 window.alert('That is not a valid entry.')
