@@ -1,5 +1,5 @@
 # Golf-Score-App
-View live project demo here: https://chrisguenther333.github.io/golf-score-app/  
+View live project demo [here](https://chrisguenther333.github.io/golf-score-app/)  
 
 In this app you can:  
 - Select from 3 different golf courses
