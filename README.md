@@ -6,7 +6,7 @@ In this app you can:
 - Select from the different tees of each course
 - Add up to 4 players
 - Reset card (this deletes all players and their scores)
-- Add and edit scores for each hole by clicking on the corresponding player cell (You can't add scores for a hole if the previous hole hasn't been completed yet)
+- Add and edit scores for each hole by clicking on the corresponding player cell
 - See the out, in, and total scores  
   
 This app was made with Javascript, Bootstrap, and HTML
