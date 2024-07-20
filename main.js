@@ -41,6 +41,13 @@ document.getElementById('course-select').addEventListener('change', event => {
         //Gets selected course API then renders teeBox
         getGolfCourseDetails(course.id).then(response => {
           renderTeeBoxSelect(response);
+          if (players.length !== 0) {
+            if (players.find(player => player.scores.length > 0)) {
+              if (window.confirm('Would you like to reset your scores?')) {
+                players.forEach(player => player.scores = [])
+              }
+            }
+          }
           renderTable(teeBoxOptions[0])
         }).catch(error => {
           console.error('An error occurred: ', error);
@@ -56,6 +63,13 @@ document.getElementById('tee-box-select').addEventListener('change', event => {
     if(currentGolfCourse.id != 19002) {
       if (event.target.value == (teeBox.teeTypeId - 1)) {
         if (currentTeeBox.courseHoleTeeBoxId != teeBox.courseHoleTeeBoxId) {
+          if (players.length !== 0) {
+            if (players.find(player => player.scores.length > 0)) {
+              if (window.confirm('Would you like to reset your scores?')) {
+                players.forEach(player => player.scores = [])
+              }
+            }
+          }
           renderTable(teeBox);
         }
       }
