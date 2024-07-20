@@ -1,7 +1,6 @@
 # To-Do
 - [ ] Change it so that text box appears when entering/editing scores, not alert
 - [ ] Update UI to make it more appealing
-- [ ] Make sure app is responsive
 - [ ] Make sure app is accessible
 ## Potential Future Features
 - Refactor code
@@ -13,4 +12,5 @@
 - Add an option to add your own golf course with customizable data
 ### Completed
 - [x] Change it so that you can add scores to any hole
+- [x] Make sure app is responsive
 - [x] Changing golf course prompts you to reset scores if you already have some
